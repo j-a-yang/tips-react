@@ -1,26 +1,27 @@
 import React from "react";
-import TestModal from "./TestModal";
+import ShiftCard from "./ShiftCard";
+import ShiftModal from "./ShiftModal";
+
+let shifts = ["shift 1", "shift 2", "shift 3"];
 
 
 class Dashboard extends React.Component {
-    constructor(props) {
-        super(props);
-        this.toggleModal = this.toggleModal.bind(this);
-        this.state = {
-            modalIsOpen: false
-        };
+    state = {
+        modalIsOpen: false
     }
 
-    toggleModal() {
+    toggleModal = () => {
         this.setState((prevState) => ({modalIsOpen: !prevState.modalIsOpen}));
     }
     
     render() {
         return (
             <div>
-                <h1>Dashboard</h1>
-                <button onClick={this.toggleModal}>New Shift</button>
-                <TestModal isOpen={this.state.modalIsOpen} toggleModal={this.toggleModal}/>
+                <div className="container">
+                    {shifts.map((shift) => <ShiftCard shift={shift}/>)}
+                    <button onClick={this.toggleModal}>Add Shift</button>
+                </div>
+                <ShiftModal isOpen={this.state.modalIsOpen} toggleModal={this.toggleModal}/>
             </div>
         );
     }

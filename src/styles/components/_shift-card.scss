@@ -1,0 +1,10 @@
+.shift-card {
+    background-color: $off-white;
+    border: 2px solid $dark-blue;
+    display: flex;
+    justify-content: space-between;
+
+
+    margin: .6rem 0;
+    padding: $m-size;
+}

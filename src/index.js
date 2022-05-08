@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Dashboard from './Components/Dashboard';
+import App from './components/App';
+import "normalize.css/normalize.css"
+import "./styles/styles.scss"
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <div>
-    <Dashboard />
+    <App />
   </div>
 );
