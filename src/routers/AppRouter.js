@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes, NavLink } from "react-router-dom";
 import Dashboard from "../components/Dashboard";
 import Login from "../components/Login";
 import Header from "../components/Header";
+import ShiftForm from "../components/ShiftForm";
 
 
 const AppRouter = () => (
@@ -12,6 +13,7 @@ const AppRouter = () => (
             <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/create" element={<ShiftForm />} />
             </Routes>
         </div>
     </BrowserRouter>

@@ -1,63 +1,113 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addShift } from "../redux/shiftSlice";
 
-class ShiftForm extends React.Component {
-    constructor(props) {
-        super(props);
+const ShiftForm = () => {
+    const dispatch = useDispatch();
+    const [shiftDetails, setShiftDetails] = useState({
+        shiftDate: 0,
+        nonCashTips: 0,
+        cashTips: 0,
+        bottledBeer: 0,
+        draftBeer: 0,
+        liquor: 0,
+        sake: 0,
+        wine: 0,
+        totalNetSales: 0
+    });
 
+    let navigate = useNavigate();
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+        setShiftDetails((prevState) => {
+            return {
+                ...prevState,
+                [name]: value
+            };
+        });
     }
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        dispatch(addShift(shiftDetails));
+        navigate("/");
+    }
 
-    render() {
-        return (
-            <div>
-                <h1>Shift Form</h1>
-            
-                <form className="shift-form">
+    return (
+            <div className="container">
+            <form className="shift-form" onSubmit={handleSubmit}>
+                <table>
+                <tbody>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Shift Date</label>
-                    <input name="shiftDate" type="date" placeholder="shift date"/>
-                    <label>Shift Type</label>
-                    <input name="shiftType" placeholder="shift type"/>
-                    <label>In-Time</label>
-                    <input name="inTime" placeholder="in-time"/>
-                    <h3>Tips</h3>
+                    <input name="shiftDate" type="date" value={shiftDetails.shiftDate} onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Non-Cash Tips</label>
-                    <input name="nonCashTips" placeholder="non-cash tips"/>
+                    <input name="nonCashTips" type="number" value={shiftDetails.nonCashTips} onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Cash Tips</label>
-                    <input name="cashTips" placeholder="cash tips"/>
-                    <h3>Sales</h3>
+                    <input name="cashTips" type="number" onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Bottled Beer</label>
-                    <input name="bottledBeer" placeholder="bottled beer sales"/>
+                    <input name="bottledBeer" type="number" onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Draft Beer</label>
-                    <input name="draftBeer" placeholder="draft beer sales"/>
+                    <input name="draftBeer" type="number" onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Liquor</label>
-                    <input name="liquor" placeholder="liquor sales"/>
+                    <input name="liquor" type="number" onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Sake</label>
-                    <input name="sake" placeholder="sake sales"/>
+                    <input name="sake" type="number" onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Wine</label>
-                    <input name="wine" placeholder="wine sales"/>
-                    <label>Totel Net Sales</label>
-                    <input name="totalNetSales" placeholder="total net sales"/>
-
-                    <label>Void Amount</label>
-                    <input name="voidAmount" placeholder="void amount"/>
-                    <label>Removal Amount</label>
-                    <input name="removalAmount" placeholder="removal amount"/>
-                    <label>Customer Discount</label>
-                    <input name="customerDiscount" placeholder="Customer Discount"/>
-                    <label>Store Discount</label>
-                    <input name="storeDiscount" placeholder="Store Discount"/>
-                    <label>Total Guests</label>
-                    <input name="totalGuests" placeholder="Total Guests"/>
-                    <label>Per-Person Average</label>
-                    <input name="ppa" placeholder="Per-Person Average"/>
+                    <input name="wine" type="number" onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
+                    <label>Total Net Sales</label>
+                    <input name="totalNetSales" type="number" onChange={handleChange}/>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="form-input-cell">
                     <label>Notes</label>
-                    <input name="notes" placeholder="Notes"/>
-                    <button>Save Shift</button>
-                </form>
-           
-            </div>
+                    <textarea name="notes" rows="1" onChange={handleChange}/>
+                    </td>
+                </tr>
+                </tbody>
+                </table>
+                <button type="submit">Save</button>
+            </form>
+        
+        </div>
         )
-    }
 }
 
 export default ShiftForm;
