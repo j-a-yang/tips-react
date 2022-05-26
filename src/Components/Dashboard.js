@@ -1,13 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ShiftCard from "./ShiftCard";
+import getShifts from '../redux/shiftSlice';
 
-let shifts = ["shift 1", "shift 2", "shift 3"];
-
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Dashboard = () => {
     const navigate = useNavigate();
+    const { shiftList, loading } = useSelector((state) => state.shifts);
+    const dispatch = useDispatch();
+
+    dispatch(getShifts("hello"));
+
+    
 
     const handleAddShift = () => {
         navigate("/create");
@@ -16,7 +22,8 @@ const Dashboard = () => {
         return (
             <div>
                 <div className="container">
-                    {shifts.map((shift) => <ShiftCard shift={shift}/>)}
+                    {loading && <h3>Loading...</h3>}
+                    {shiftList && shiftList.map((shift) => <ShiftCard shift={shift}/>)}
                     <button onClick={handleAddShift}>Add Shift</button>
                 </div>
             </div>
