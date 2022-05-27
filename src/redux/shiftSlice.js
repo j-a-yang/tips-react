@@ -15,11 +15,16 @@ const shiftCollection = collection(db, 'shifts');
 // async addshift thunk action creater.
 const addShift = createAsyncThunk(
     'shifts/addShift',
-    async (newShiftObj, { rejectWithValue }) => {
+    async (shiftDetails, { rejectWithValue }) => {
+        const newShiftObj = {
+            id: uuid(),
+            ... shiftDetails
+        }
+
         try {
             const newShiftRef = await addDoc(shiftCollection, newShiftObj);
+            // I'm not returning an action payload here at the moment.
         } catch (err) {
-            console.log('add shift error', err);
             return rejectWithValue([], err);
         }    
     }
@@ -28,10 +33,18 @@ const addShift = createAsyncThunk(
 
 const getShifts = createAsyncThunk(
     'shifts/getShifts',
-    async ( _, {rejectWithValue}) => {
+    async (_,{ rejectWithValue }) => {
+        const foundShifts = [];
+
         try {
-            console.log("I'm here");
-            return await getDocs(shiftCollection);
+            // fetch all shifts from firestore
+            const response = await getDocs(shiftCollection);
+            // iteratre through firestore data structure to extract shift objects.
+            response.forEach((doc) => {
+                foundShifts.push(doc.data());
+            });
+
+            return foundShifts;
         } catch (err) {
             return rejectWithValue([], err);
         }
@@ -44,19 +57,14 @@ export const shiftSlice = createSlice({
     reducers: {},
     extraReducers: {
         [addShift.fulfilled]: (state, action) => {
-            console.log(addShift.fulfilled);
-            console.log('async addshift fulfilled', action.payload);
             state.loading = false;
         },
         [addShift.pending]: (state, action) => {
-            console.log("pending");
             state.loading = true;
         },
         [addShift.rejected]: (state, action) => {
-            console.log('addShift rejected', action.error);
             state.loading = false;
             state.error = action.error;
-
         },
         [getShifts.fulfilled]: (state, action) => {
             state.loading = false;
